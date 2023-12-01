@@ -32,17 +32,17 @@ set IN_DEL 0.6
 set IN_DEL_MIN 0.3
 set OUT_DEL 0.6
 set OUT_DEL_MIN 0.3
-set ALL_IN_BUT_CLK [remove_from_collection [all_inputs] "clk_p_i"]
+set ALL_IN_BUT_CLK [remove_from_collection [all_inputs] "clk_i"]
 
-create_clock -name "clk_p_i" -period $Tclk [get_ports "clk_p_i"]
-set_fix_hold clk_p_i
-set_dont_touch_network [get_clocks "clk_p_i"]
-set_clock_uncertainty $TCU [get_clocks "clk_p_i"]
+create_clock -name "clk_i" -period $Tclk [get_ports "clk_i"]
+set_fix_hold clk_i
+set_dont_touch_network [get_clocks "clk_i"]
+set_clock_uncertainty $TCU [get_clocks "clk_i"]
 
-set_input_delay $IN_DEL -clock "clk_p_i" $ALL_IN_BUT_CLK
-set_input_delay -min $IN_DEL_MIN -clock "clk_p_i" $ALL_IN_BUT_CLK
-set_output_delay $OUT_DEL -clock "clk_p_i" [all_outputs]
-set_output_delay -min $OUT_DEL_MIN -clock "clk_p_i" [all_outputs]
+set_input_delay $IN_DEL -clock "clk_i" $ALL_IN_BUT_CLK
+set_input_delay -min $IN_DEL_MIN -clock "clk_i" $ALL_IN_BUT_CLK
+set_output_delay $OUT_DEL -clock "clk_i" [all_outputs]
+set_output_delay -min $OUT_DEL_MIN -clock "clk_i" [all_outputs]
 
 set_max_area 0.0
 
