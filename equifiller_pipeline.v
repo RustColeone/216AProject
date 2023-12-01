@@ -71,47 +71,51 @@ end
 
 task find_suitable_strip;
     input [1:0] current;
-    inout [3:0] index;
+    inout [3:0] i_current;
     input [3:0] i_target;
     inout [7:0] min_row_width;
     inout [3:0] min_row;
     inout [7:0] min_y;
     inout [3:0] min_priority;
+    reg [3:0] index;
     // Add other necessary inputs and outputs
     begin
         //The iteration is only necessary if we did not find a match, in that case min_y == ARRAY_SIZE
-        for (index = index; index < i_target; index = index + 1) begin
-            //does not need to be 13, adjust accordingly for timing we can do the rest in later stages
-            //And also we do not need to set this specifically to be 0 because when new input came in this is defaulted to zero
-            //find suitable strip that is not full
-            //strip_heights[i[current]] - program_height[current] == 0 optimized to strip_heights[i[current]] == program_height[current] so no adder needed
-            //strip_heights[i[current]] - program_height[current] == 1 optimized to strip_heights[i[current]] - 1 == program_height[current] because strip_heights[i[current]] is only 4 bit
-            if (strip_heights[index] == program_height[current] || strip_heights[index] - 1 == program_height[current] || (strip_heights[index] == 16 && program_height[current] >= 13))begin
-                //This is for debugging
-                //if(program_width[current] == 12 && program_height[current] == 12) begin
-                    //current = current;
-                //end
-                //Is a parameter considered a constant? or does it takes up some space?
-                //ARRAY_SIZE - Occupied_Width[i[current]] >= program_width[current] optimized to ARRAY_SIZE >= program_width[current] + Occupied_Width[i[current]]
-                //Possibly avoided the need for computing additional complements
-                if(ARRAY_SIZE >= program_width[current] + Occupied_Width[index]) begin
-                    if(Occupied_Width[index] < min_row_width) begin
-                        if(strip_heights[index] == program_height[current] || program_height[current] >= 13) begin
+        for (index = 0; index < 13; index = index + 1) begin
+            if(index < i_target && index >= i_current) begin
+                i_current = index + 1;
+                //does not need to be 13, adjust accordingly for timing we can do the rest in later stages
+                //And also we do not need to set this specifically to be 0 because when new input came in this is defaulted to zero
+                //find suitable strip that is not full
+                //strip_heights[i[current]] - program_height[current] == 0 optimized to strip_heights[i[current]] == program_height[current] so no adder needed
+                //strip_heights[i[current]] - program_height[current] == 1 optimized to strip_heights[i[current]] - 1 == program_height[current] because strip_heights[i[current]] is only 4 bit
+                if (strip_heights[index] == program_height[current] || strip_heights[index] - 1 == program_height[current] || (strip_heights[index] == 16 && program_height[current] >= 13))begin
+                    //This is for debugging
+                    //if(program_width[current] == 12 && program_height[current] == 12) begin
+                        //current = current;
+                    //end
+                    //Is a parameter considered a constant? or does it takes up some space?
+                    //ARRAY_SIZE - Occupied_Width[i[current]] >= program_width[current] optimized to ARRAY_SIZE >= program_width[current] + Occupied_Width[i[current]]
+                    //Possibly avoided the need for computing additional complements
+                    if(ARRAY_SIZE >= program_width[current] + Occupied_Width[index]) begin
+                        if(Occupied_Width[index] < min_row_width) begin
+                            if(strip_heights[index] == program_height[current] || program_height[current] >= 13) begin
+                                min_priority = 1;
+                            end
+                            min_row = index;
+                            min_y=index_y[current];
+                            min_row_width = Occupied_Width[index];
+                        end else if(Occupied_Width[index] == min_row_width && min_priority != 1)begin 
                             min_priority = 1;
+                            min_row = index;
+                            min_y = index_y[current];
+                            min_row_width = Occupied_Width[index];
                         end
-                        min_row = index;
-                        min_y=index_y[current];
-                        min_row_width = Occupied_Width[index];
-                    end else if(Occupied_Width[index] == min_row_width && min_priority != 1)begin 
-                        min_priority = 1;
-                        min_row = index;
-                        min_y = index_y[current];
-                        min_row_width = Occupied_Width[index];
                     end
                 end
-            end
-            if(strike[current] == 1) begin
-                index_y[current] = index_y[current] + strip_heights[index];
+                if(strike[current] == 1) begin
+                    index_y[current] = index_y[current] + strip_heights[index];
+                end
             end
         end
     end
