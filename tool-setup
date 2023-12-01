@@ -1,0 +1,35 @@
+# Synopsys setup
+# --------------
+source /w/apps3/Synopsys/Design_Complier/vG-2012.06-SP1/SETUP
+source /w/apps3/Synopsys/HSPICE/vG-2012.06/SETUP
+source /w/apps3/Synopsys/Formality/vG-2012.06-SP1/SETUP
+source /w/apps3/Synopsys/IC_Compiler/vG-2012.06-SP1/SETUP
+source /w/apps3/Synopsys/HSIMplus/vG-2012.06/SETUP
+source /w/apps3/Synopsys/PrimeTime/vR-2020.09-SP1/SETUP.csh
+source /w/apps3/Synopsys/Raphael/vG_2012.06/SETUP
+source /w/apps3/Synopsys/StarRC/vG-2012.06-SP1/SETUP
+source /w/apps3/Synopsys/PrimeRail/vG-2012.06/SETUP
+source /w/apps3/Synopsys/PCM_Studio/vG-2012.03/SETUP
+source /w/apps3/Synopsys/NanoTime/vG-2012.06-SP1/SETUP
+source /w/apps3/Synopsys/Liberty_NCX/vH-2013.03-SP3/SETUP
+
+# Cadence setup
+# -------------
+setenv CDSHOME /w/apps3/Cadence/IC617
+source /w/apps3/Cadence/IC617/SETUP
+source /w/apps3/Cadence/ASSURA415-617/SETUP
+source /w/apps3/Cadence/SPECTRE161/SETUP
+source /w/apps3/Cadence/EXT171/SETUP
+
+setenv ASSURAHOME /w/apps3/Cadence/ASSURA415-617
+set path=($ASSURAHOME/tools/dfII/bin $ASSURAHOME/tools/bin $ASSURAHOME/tools/assura/bin $path)
+
+setenv QRC_HOME /w/apps3/Cadence/EXT171
+set path=($QRC_HOME/bin $QRC_HOME/tools/dfII/bin $QRC_HOME/tools/bin $QRC_HOME/tools/extraction/bin $path)
+setenv CDS_AUTO_64BIT all
+setenv W3264_NO_HOST_CHEKC 1
+
+# Mentor setup
+# -------------
+source /w/apps3/Mentor/ModelsimSE/v2020.4/SETUP
+source /w/apps3/Mentor/Calibre/v2021.1_16.10/SETUP
